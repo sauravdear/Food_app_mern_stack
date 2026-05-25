@@ -1,0 +1,9 @@
+node_modules/
+.env
+logs/
+*.log
+dist/
+.git/
+.gitignore
+README.md
+generate-pdf.js

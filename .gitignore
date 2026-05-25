@@ -1,0 +1,85 @@
+# ── Dependencies ──────────────────────────────────────────────────────────────
+node_modules/
+**/node_modules/
+
+# ── Environment & Secrets (NEVER commit these) ────────────────────────────────
+.env
+.env.local
+.env.production
+.env.staging
+**/.env
+**/.env.local
+**/.env.production
+
+# ── Build Output ──────────────────────────────────────────────────────────────
+dist/
+build/
+**/dist/
+**/build/
+frontend/dist/
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+logs/
+**/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+backend/logs/combined.log
+backend/logs/error.log
+
+# ── OS Generated Files ────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ── Editor / IDE ──────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+# Local docker override files (not the main docker-compose.yml)
+docker-compose.override.yml
+docker-compose.local.yml
+
+# ── Temporary / Cache ─────────────────────────────────────────────────────────
+.cache/
+.temp/
+tmp/
+temp/
+*.tmp
+.eslintcache
+.parcelcache
+
+# ── Test Coverage ─────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Unrelated / Local-only Files ──────────────────────────────────────────────
+# Skit/PDF scripts (not part of the app)
+generate_skit_pdf.py
+generate-pdf.js
+The_Perfect_Welcome_Skit.pdf
+backend/generate-pdf.js
+
+# ── Package Manager ───────────────────────────────────────────────────────────
+# Keep package-lock.json — it locks exact versions for reproducible installs
+# Do NOT add package-lock.json here
+
+# ── SSL Certificates (if stored locally) ─────────────────────────────────────
+*.pem
+*.key
+*.crt
+*.cert

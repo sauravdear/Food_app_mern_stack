@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: foodflow_mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    # Do NOT expose port 27017 externally in production — backend accesses via internal network
+    environment:
+      MONGO_INITDB_DATABASE: food_redistribution
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-foodflow}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS:?MONGO_ROOT_PASS must be set}
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: foodflow_backend
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      MONGO_URI: mongodb://${MONGO_ROOT_USER:-foodflow}:${MONGO_ROOT_PASS}@mongodb:27017/food_redistribution?authSource=admin
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change_this_in_production}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change_this_refresh_in_production}
+      JWT_ACCESS_EXPIRE: 24h
+      JWT_REFRESH_EXPIRE: 7d
+      FRONTEND_URL: http://localhost:80
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+    ports:
+      - "5000:5000"
+    volumes:
+      - backend_logs:/app/logs
+
+  frontend:
+    build: ./frontend
+    container_name: foodflow_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  mongo_data:
+  backend_logs:
