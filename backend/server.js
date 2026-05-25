@@ -38,18 +38,17 @@ app.set('io', io);
 app.use(helmet());
 app.use(mongoSanitize());
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
+  process.env.FRONTEND_URL?.trim(),
   'http://localhost:5173',
   'http://localhost:3000',
 ].filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.some((o) => origin.startsWith(o))) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS blocked: ${origin}`));
-    }
+    // allow non-browser requests (Postman, server-to-server)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin.trim())) return callback(null, true);
+    return callback(null, false);
   },
   credentials: true,
 }));
