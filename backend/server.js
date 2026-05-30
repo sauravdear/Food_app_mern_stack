@@ -17,6 +17,7 @@ import inventoryRoutes from './routes/inventoryRoutes.js';
 import transferRoutes from './routes/transferRoutes.js';
 import storeRoutes from './routes/storeRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
+import seedRoute from './routes/seedRoute.js';
 
 import { bulkUpdateVelocities } from './services/velocityEngine.js';
 import { sendExpirationNotifications } from './services/expirationService.js';
@@ -73,6 +74,7 @@ app.use('/api/inventory', inventoryRoutes);
 app.use('/api/transfers', transferRoutes);
 app.use('/api/stores', storeRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/admin/seed', seedRoute);
 
 // Error handling
 app.use(notFound);
